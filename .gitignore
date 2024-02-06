@@ -52,3 +52,29 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+
+# Python pycache
+__pycache__/
+*.pycache
+
+# ROS build
+build/
+devel/
+install/
+logs/
+test_results/
+
+# ROS workspace
+*.rosinstall
+*.rosinstall.*
+*.wstool
+*.wstool.*
+*.rosdep
+*.rosdep.*
+*.catkin_tools
+*.catkin_tools.*
+*.catkin_workspace
+*.catkin_workspace.*
+*.cmake
+*.cmake.*
+*.setup.sh
