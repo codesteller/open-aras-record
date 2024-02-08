@@ -1,0 +1,17 @@
+<launch>
+
+    <node pkg="vedyne_serial" type="vedyne_node.py" name="vedyne_serial_node" output="screen">
+        <param name="port" type="string" value="/dev/ttyUSB0"/>
+        <param name="baudrate" type="int" value="57600"/>
+    </node>
+
+    <node pkg="vedyne_serial" type="vedyne_serial_node" name="tf_vedyne_serial_node" output="screen">
+    </node>
+
+    <node pkg="tf" type="static_transform_publisher" name="vedyne_base_link_broadcaster" args="0 0 0 0 0 0 /ti_mmwave_0 /vedyne_0 100" />
+
+     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find vedyne_serial)/rviz/vedyne.rviz" required="true"/>
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="vedyne_base_link_broadcaster" args="0 0 0 0 0 0 /base_link /laser 100" /> -->
+
+</launch>
