@@ -1,7 +1,7 @@
 /**
  * @ Author: Pallab Maji
  * @ Create Time: 2024-01-31 10:53:51
- * @ Modified time: 2024-02-07 19:35:03
+ * @ Modified time: 2024-02-08 17:27:53
  * @ Description: Arduino code to Read and Parse Sensor Outputs to ROS Node over ROS-Serial
  *              This code is to be run on the Arduino Mega 2560 board
  *              This code is to be used with the ROS Node: vehicle_dynamics
@@ -299,11 +299,11 @@ void get_encoder_data_interrupt(std_msgs::Float32 &encoder_speed_msg)
     {
         newPulseDurationAvailable = false;
         unsigned long pulseDuration = pulseInTimeEnd - pulseInTimeBegin;
-        
+
         // encoder_speed_msg.data = pulseDuration;
         // encoder_speed_pub.publish(&encoder_speed_msg);
 
-        if (pulseDuration > 100000 || pulseDuration <=0 )
+        if (pulseDuration > 100000 || pulseDuration <= 0)
         {
             speed_kmph = prev_speed;
             encoder_speed_msg.data = speed_kmph;
@@ -321,8 +321,6 @@ void get_encoder_data_interrupt(std_msgs::Float32 &encoder_speed_msg)
             encoder_speed_pub.publish(&encoder_speed_msg);
             prev_speed = speed_kmph;
         }
-
-        
     }
     else
     {
@@ -509,16 +507,16 @@ bool init_imu_modules(MPU6050 &mpu)
         // mpu.CalibrateAccel(6);
         // mpu.CalibrateGyro(6);
         // turn on the DMP, now that it's ready
-        LOGGER(("[Info] Enabling DMP..."));
+        LOGGER(("[INFO] Enabling DMP..."));
         mpu.setDMPEnabled(true);
 
         // enable Arduino interrupt detection
-        LOGGER(("[Info] Enabling interrupt detection (Arduino external interrupt 0)..."));
+        LOGGER(("[INFO] Enabling interrupt detection (Arduino external interrupt 0)..."));
         attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);
         mpuIntStatus = mpu.getIntStatus();
 
         // set our DMP Ready flag so the main loop() function knows it's okay to use it
-        LOGGER(("[Info] DMP ready! Waiting for first interrupt..."));
+        LOGGER(("[INFO] DMP ready! Waiting for first interrupt..."));
         dmpReady = true;
 
         // get expected DMP packet size for later comparison
@@ -625,28 +623,30 @@ void get_imu_data(MPU6050 &mpu, sensor_msgs::Imu &imu_msg)
         double zf = z / 16384.0;
 
         geometry_msgs::Quaternion current_orientation;
-        current_orientation.x = q.x;
-        current_orientation.y = q.y;
-        current_orientation.z = q.z;
-        current_orientation.w = q.w;
+        current_orientation.x = xf;
+        current_orientation.y = yf;
+        current_orientation.z = zf;
+        current_orientation.w = wf;
 
         if (setzero_orientation)
         {
-            zero_orientation.w = q.w;
-            zero_orientation.x = q.x;
-            zero_orientation.y = q.y;
-            zero_orientation.z = q.z;
+            zero_orientation.w = wf;
+            zero_orientation.x = xf;
+            zero_orientation.y = yf;
+            zero_orientation.z = zf;
+
             setzero_orientation = false;
         }
 
-        differential_orientation.x =
-            q.w * zero_orientation.x - q.x * zero_orientation.w - q.y * zero_orientation.z + q.z * zero_orientation.y;
-        differential_orientation.y =
-            q.w * zero_orientation.y + q.x * zero_orientation.z - q.y * zero_orientation.w - q.z * zero_orientation.x;
-        differential_orientation.z =
-            q.w * zero_orientation.z - q.x * zero_orientation.y + q.y * zero_orientation.x - q.z * zero_orientation.w;
-        differential_orientation.w =
-            q.w * zero_orientation.w + q.x * zero_orientation.x + q.y * zero_orientation.y + q.z * zero_orientation.z;
+        differential_orientation.x = wf * zero_orientation.x - xf * zero_orientation.w - yf * zero_orientation.z +
+                                    zf * zero_orientation.y;
+        differential_orientation.y = wf * zero_orientation.y + xf * zero_orientation.z - yf * zero_orientation.w -
+                                    zf * zero_orientation.x;
+        differential_orientation.z = wf * zero_orientation.z - xf * zero_orientation.y + yf * zero_orientation.x -
+                                    zf * zero_orientation.w;
+        differential_orientation.w = wf * zero_orientation.w + xf * zero_orientation.x + yf * zero_orientation.y +
+                                    zf * zero_orientation.z;
+                                    
 
         // Get Gyro Values
         int16_t gx = (((0xff & (char)teapotPacket[data_packet_start + 10]) << 8) |
@@ -687,6 +687,11 @@ void get_imu_data(MPU6050 &mpu, sensor_msgs::Imu &imu_msg)
         imu_msg.orientation.z = differential_orientation.z;
         imu_msg.orientation.w = differential_orientation.w;
 
+        // imu_msg.orientation.x = xf;
+        // imu_msg.orientation.y = yf;
+        // imu_msg.orientation.z = zf;
+        // imu_msg.orientation.w = wf;
+
         imu_msg.angular_velocity.x = gxf;
         imu_msg.angular_velocity.y = gyf;
         imu_msg.angular_velocity.z = gzf;
@@ -695,57 +700,7 @@ void get_imu_data(MPU6050 &mpu, sensor_msgs::Imu &imu_msg)
         imu_msg.linear_acceleration.y = ayf;
         imu_msg.linear_acceleration.z = azf;
 
-        // SECTION STARTS
-
-        // // display Euler angles in degrees
-        // mpu.dmpGetQuaternion(&q, fifoBuffer);
-        // mpu.dmpGetGravity(&gravity, &q);
-        // mpu.dmpGetGyro(&gyro, fifoBuffer);
-        // mpu.dmpGetAccel(&aa, fifoBuffer);
-        // mpu.dmpGetLinearAccel(&aaReal, &aa, &gravity);
-        // mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-
-        // imu_msg.header.stamp = nh.now();
-        // imu_msg.header.frame_id = MESSAGE_FRAME_ID;
-
-        // geometry_msgs::Quaternion current_orientation;
-        // current_orientation.x = q.x;
-        // current_orientation.y = q.y;
-        // current_orientation.z = q.z;
-        // current_orientation.w = q.w;
-
-        // if (setzero_orientation)
-        // {
-        //     zero_orientation.w = q.w;
-        //     zero_orientation.x = q.x;
-        //     zero_orientation.y = q.y;
-        //     zero_orientation.z = q.z;
-        //     setzero_orientation = false;
-        // }
-
-        // // Calculate Relative Rotation from Zero Orientation and current orientation
-
-        // differential_orientation.x = q.w * zero_orientation.x - q.x * zero_orientation.w - q.y * zero_orientation.z +
-        // q.z * zero_orientation.y; differential_orientation.y = q.w * zero_orientation.y + q.x * zero_orientation.z -
-        // q.y * zero_orientation.w - q.z * zero_orientation.x; differential_orientation.z = q.w * zero_orientation.z -
-        // q.x * zero_orientation.y + q.y * zero_orientation.x - q.z * zero_orientation.w; differential_orientation.w =
-        // q.w * zero_orientation.w + q.x * zero_orientation.x + q.y * zero_orientation.y + q.z * zero_orientation.z;
-
-        // imu_msg.orientation.x = differential_orientation.x;
-        // imu_msg.orientation.y = differential_orientation.y;
-        // imu_msg.orientation.z = differential_orientation.z;
-        // imu_msg.orientation.w = differential_orientation.w;
-
-        // imu_msg.angular_velocity.x = gyro.x;
-        // imu_msg.angular_velocity.y = gyro.y;
-        // imu_msg.angular_velocity.z = gyro.z;
-
-        // imu_msg.linear_acceleration.x = aa.x;
-        // imu_msg.linear_acceleration.y = aa.y;
-        // imu_msg.linear_acceleration.z = aa.z;
-
-        // SECTION ENDS
-
+        
         // Print Temerature
         double temp = mpu.getTemperature() / 340.00 + 36.53;
         // LOGGER(("[INFO] IMU Temperature: "));
