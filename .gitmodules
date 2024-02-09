@@ -1,0 +1,10 @@
+[submodule "aras_sensor_interfaces/src/serial"]
+	path = aras_sensor_interfaces/src/serial
+	url = https://github.com/wjwwood/serial
+[submodule "aras_sensor_interfaces/src/ti_mmwave_rospkg"]
+	path = aras_sensor_interfaces/src/ti_mmwave_rospkg
+	url = https://github.com/g-codesteller/ti_mmwave_rospkg.git
+	branch = noetic_devel
+[submodule "aras_sensor_interfaces/src/usb_cam"]
+	path = aras_sensor_interfaces/src/usb_cam
+	url = https://github.com/g-codesteller/ros_usbcam.git
