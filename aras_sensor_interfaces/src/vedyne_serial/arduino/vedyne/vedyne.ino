@@ -504,8 +504,8 @@ bool init_imu_modules(MPU6050 &mpu)
     // make sure it worked (returns 0 if so)
     if (devStatus == 0)
     {
-        // mpu.CalibrateAccel(6);
-        // mpu.CalibrateGyro(6);
+         mpu.CalibrateAccel(6);
+         mpu.CalibrateGyro(6);
         // turn on the DMP, now that it's ready
         LOGGER(("[INFO] Enabling DMP..."));
         mpu.setDMPEnabled(true);
@@ -682,15 +682,15 @@ void get_imu_data(MPU6050 &mpu, sensor_msgs::Imu &imu_msg)
         imu_msg.header.stamp = nh.now();
         imu_msg.header.frame_id = MESSAGE_FRAME_ID;
 
-        imu_msg.orientation.x = differential_orientation.x;
-        imu_msg.orientation.y = differential_orientation.y;
-        imu_msg.orientation.z = differential_orientation.z;
-        imu_msg.orientation.w = differential_orientation.w;
+//        imu_msg.orientation.x = differential_orientation.x;
+//        imu_msg.orientation.y = differential_orientation.y;
+//        imu_msg.orientation.z = differential_orientation.z;
+//        imu_msg.orientation.w = differential_orientation.w;
 
-        // imu_msg.orientation.x = xf;
-        // imu_msg.orientation.y = yf;
-        // imu_msg.orientation.z = zf;
-        // imu_msg.orientation.w = wf;
+         imu_msg.orientation.x = xf;
+         imu_msg.orientation.y = yf;
+         imu_msg.orientation.z = zf;
+         imu_msg.orientation.w = wf;
 
         imu_msg.angular_velocity.x = gxf;
         imu_msg.angular_velocity.y = gyf;

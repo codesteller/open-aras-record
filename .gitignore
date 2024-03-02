@@ -80,3 +80,6 @@ test_results/
 *.setup.sh
 
 .vscode
+
+*.bag
+Recordings
