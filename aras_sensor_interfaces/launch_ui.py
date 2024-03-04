@@ -169,7 +169,9 @@ class ROSLauncherUI(QWidget):
 
     def launch_radar(self):
         # RADAR ROS launch file
-        launch_file = './src/ti_mmwave_rospkg/launch/1843es1_long_range.launch'
+        # launch_file = './src/ti_mmwave_rospkg/launch/1843es1_long_range.launch'
+        launch_file = './src/ti_mmwave_rospkg/launch/1843_2d_mrr_furacam.launch'
+        # launch_file = './src/ti_mmwave_rospkg/launch/1843_3d_lrr_furacam.launch'
 
         # Launch ROS node using subprocess
         self.run_command(['roslaunch', launch_file])
@@ -177,7 +179,7 @@ class ROSLauncherUI(QWidget):
     def stop_radar(self):
         # Stop ROS node using subprocess
         self.run_command(['rosnode', 'kill', '/ti_mmwave'])
-        self.run_command(['rosnode', 'kill', '/ti_mmwave_1'])
+        self.run_command(['rosnode', 'kill', '/ti_mmwave_0'])
 
     def launch_vedyne(self):
         # Launch VeDyne using specified launch file

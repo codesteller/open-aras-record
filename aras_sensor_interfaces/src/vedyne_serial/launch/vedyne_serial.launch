@@ -8,8 +8,8 @@
     <node pkg="vedyne_serial" type="vedyne_serial_node" name="tf_vedyne_serial_node" output="screen">
     </node>
 
-    <node pkg="tf" type="static_transform_publisher" name="vedyne_link_broadcaster" args="-0.03 -0.48 0 0 0 0 /ti_mmwave /vedyne_0 100" />
-    <node pkg="tf" type="static_transform_publisher" name="vedyne_imu_link_broadcaster" args="0.04 0.0 0 0 0 0 /vedyne_0 /imu_link 100" />
+    <node pkg="tf" type="static_transform_publisher" name="vedyne_baselink" args="-0.03 -0.48 0 0 0 0 /ti_mmwave /vedyne_0 100" />
+    <node pkg="tf" type="static_transform_publisher" name="vedyne_imu_link" args="0.04 0.0 0 0 0 0 /vedyne_0 /imu_link 100" />
     
 
     <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find vedyne_serial)/rviz/vedyne.rviz" required="true"/> -->

@@ -4,7 +4,8 @@
 [submodule "aras_sensor_interfaces/src/ti_mmwave_rospkg"]
 	path = aras_sensor_interfaces/src/ti_mmwave_rospkg
 	url = https://github.com/g-codesteller/ti_mmwave_rospkg.git
-	branch = noetic_devel
+	branch = master
 [submodule "aras_sensor_interfaces/src/usb_cam"]
 	path = aras_sensor_interfaces/src/usb_cam
 	url = https://github.com/g-codesteller/ros_usbcam.git
+	branch = bike_aras
