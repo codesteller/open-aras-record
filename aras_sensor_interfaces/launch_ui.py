@@ -169,7 +169,6 @@ class ROSLauncherUI(QWidget):
 
     def launch_radar(self):
         # RADAR ROS launch file
-        # launch_file = './src/ti_mmwave_rospkg/launch/1843es1_long_range.launch'
         launch_file = './src/ti_mmwave_rospkg/launch/1843_2d_mrr_furacam.launch'
         # launch_file = './src/ti_mmwave_rospkg/launch/1843_3d_lrr_furacam.launch'
 
