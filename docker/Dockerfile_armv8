@@ -1,5 +1,5 @@
 # generated from docker_images/create_ros_image.Dockerfile.em
-FROM osrf/ros:noetic-desktop-focal
+FROM arm64v8/ros:noetic
 
 # Install dependencies
 ## Add TZDATA to avoid interactive prompt
@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y tzdata
 RUN ln -fs /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 RUN dpkg-reconfigure --frontend noninteractive tzdata
 
-RUN apt-get update && apt-get upgrade -y 
+RUN apt-get update && apt-get upgrade -y
 
 # install ros packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -21,9 +21,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN apt-get update \
    && apt-get -y install --no-install-recommends \
    software-properties-common git libusb-1.0-0-dev \
-   wget zsh python3-catkin-tools v4l-utils vlc libv4l-dev
+   wget zsh python3-catkin-tools v4l-utils
 
-RUN apt-get install -y ros-noetic-pcl-ros  ros-noetic-imu-tools ros-noetic-rviz-imu-plugin \
+RUN apt-get install -y ros-noetic-pcl-ros  \
     ros-noetic-rtabmap-ros ros-noetic-rqt ros-noetic-rqt-image-view
 
 RUN apt-get install -y \
@@ -56,13 +56,11 @@ RUN cd /opt/arduino-${ARDUINO_IDE_VERSION}/libraries \
     && source /opt/ros/noetic/setup.bash \
     && rosrun rosserial_arduino make_libraries.py .
 
-RUN apt-get install -y neovim tmux
+RUN apt install neovim tmux
 
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
-# RUN echo "source /workspace/calibration/devel/setup.bash" >> ~/.bashrc
-# RUN echo 'export PS1="[NOETIC][DAI][\u@docker] \W # "' >> ~/.bashrc
+# RUN echo "source /ws/devel/setup.bash" >> ~/.bashrc
+# RUN echo "source /workspace/devel/setup.bash" >> ~/.bashrc
+RUN echo 'export PS1="[NOETIC][DAI][\u@docker] \W # "' >> ~/.bashrc
 
 CMD ["bash"]
-
-
-#catkin create pkg vedyne_serial --catkin-deps roscpp geometry_msgs sensor_msgs serial std_msgs std_srvs tf 
