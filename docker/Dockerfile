@@ -33,6 +33,10 @@ RUN apt-get install -y \
     python3-osrf-pycommon \
     python3-rosdep 
 
+RUN pip3 install rospkg pyyaml numpy opencv-python==4.5.4.60 \
+    opencv-contrib-python==4.5.4.60 transforms3d pyquaternion \
+    scipy matplotlib ipython jupyterlab
+
 RUN apt-get install -y ros-noetic-foxglove-bridge
 
 # Setup Environment
@@ -52,7 +56,7 @@ RUN cd /opt/arduino-${ARDUINO_IDE_VERSION}/libraries \
     && source /opt/ros/noetic/setup.bash \
     && rosrun rosserial_arduino make_libraries.py .
 
-RUN apt install neovim tmux
+RUN apt-get install -y neovim tmux
 
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 # RUN echo "source /workspace/calibration/devel/setup.bash" >> ~/.bashrc
