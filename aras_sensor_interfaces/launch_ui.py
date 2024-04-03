@@ -30,10 +30,10 @@ class ROSLauncherUI(QWidget):
         self.rosbag_process = None  # To store the rosbag recording process
         self.recording_indicator = QLabel('Recording OFF')
 
-        recording_dir = "./Recordings"
-        if not os.path.exists(recording_dir):
+        self.recording_dir = "./Recordings"
+        if not os.path.exists(self.recording_dir):
             print("Creating Recording Directory")
-            os.makedirs(self.recording_dir)
+            os.makedirs(self.recording_dir, ok_exists=True)
 
         self.recording_prefix = os.path.join(recording_dir, 'ARAS_Bike_')
 
@@ -260,7 +260,7 @@ if __name__ == '__main__':
         window = ROSLauncherUI()
         window.show()
         sys.exit(app.exec_())
-    except:
-        print("Exiting")
+    except Exception as e:
+        print("Exiting: {}".format(e))
         # crashEvent()
 
