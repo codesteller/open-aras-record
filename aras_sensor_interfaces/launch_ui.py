@@ -33,9 +33,9 @@ class ROSLauncherUI(QWidget):
         self.recording_dir = "./Recordings"
         if not os.path.exists(self.recording_dir):
             print("Creating Recording Directory")
-            os.makedirs(self.recording_dir, ok_exists=True)
+            os.makedirs(self.recording_dir, exist_ok=True)
 
-        self.recording_prefix = os.path.join(recording_dir, 'ARAS_Bike_')
+        self.recording_prefix = os.path.join(self.recording_dir, 'ARAS_Bike_')
 
         # Create & Initialize the UI
         self.init_ui()
