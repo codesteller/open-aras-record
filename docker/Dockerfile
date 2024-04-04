@@ -56,7 +56,7 @@ RUN cd /opt/arduino-${ARDUINO_IDE_VERSION}/libraries \
     && source /opt/ros/noetic/setup.bash \
     && rosrun rosserial_arduino make_libraries.py .
 
-RUN apt-get install -y neovim tmux
+RUN apt-get install -y neovim tmux ros-noetic-rviz-imu-plugin
 
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 # RUN echo "source /workspace/calibration/devel/setup.bash" >> ~/.bashrc

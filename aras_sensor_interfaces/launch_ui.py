@@ -43,6 +43,7 @@ class ROSLauncherUI(QWidget):
 
     def init_ui(self):
          # Create main layout
+        print("Init UI")
         main_layout = QVBoxLayout()
 
         
