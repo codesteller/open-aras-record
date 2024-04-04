@@ -1,0 +1,9 @@
+
+<launch>
+    <node name="drwig_reader" pkg="drwig_ros" type="drwig_reader.py" output="screen"/>
+    <!-- Launch RVIZ -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find drwig_ros)/rviz/drwig.rviz" />
+    <node pkg="tf" type="static_transform_publisher" name="radar_baselink" args="0 0 0 0 0 0 drwig_pcl drwig 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="camera_baselink" args="4.5 0 6.4 -1.5707963267948966 0 -1.5707963267948966 drwig_pcl usb_cam 100"/>
+  <!-- <node pkg="tf" type="static_transform_publisher" name="map_baselink" args="0 0 0 0 0 0 map drwig_pcl 100"/> -->
+</launch>
